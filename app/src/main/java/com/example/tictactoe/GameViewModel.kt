@@ -244,14 +244,13 @@ class GameViewModel : ViewModel() {
     }
     private  fun bot(){
         if (checkWin(BoardCellValue.CROSS)){
-            //after canWin() return true it also located winCell
             addValueToBoard(woncell)
         }
         else if(block()){
             addValueToBoard(woncell)
         }
         else if(checkMiddle()){
-            addValueToBoard(5) //Computer put X in 5th cell
+            addValueToBoard(5)
         }
         else{
             randMove()
