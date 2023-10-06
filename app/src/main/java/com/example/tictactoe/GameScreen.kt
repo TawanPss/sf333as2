@@ -143,21 +143,22 @@ fun GameScreen(
                 fontSize = 24.sp,
                 fontStyle = FontStyle.Italic
             )
-            Button(
-                onClick = {
-                    viewModel.onAction(
-                        UserAction.PlayAgainButtonClicked
+            if (state.hasWon || viewModel.hasBoardFull()) {
+                Button(
+                    onClick = {
+                        viewModel.onAction(
+                            UserAction.PlayAgainButtonClicked
+                        )
+                    },
+                    shape = RoundedCornerShape(5.dp),
+                    elevation = ButtonDefaults.buttonElevation(5.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = BlueCustom,
+                        contentColor = Color.White
                     )
-                },
-                shape = RoundedCornerShape(5.dp),
-                elevation = ButtonDefaults.buttonElevation(5.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = BlueCustom,
-                    contentColor = Color.White
-                ),
-                enabled = state.hasWon || viewModel.hasBoardFull()
-            ) {
-                Text(text = "Play Again", fontSize = 16.sp)
+                ) {
+                    Text(text = "Play Again", fontSize = 16.sp)
+                }
             }
         }
     }

@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import kotlin.random.Random
+
 
 class GameViewModel : ViewModel() {
     var state by mutableStateOf(GameState())
@@ -239,7 +239,7 @@ class GameViewModel : ViewModel() {
         }
         return null_Space.random()
     }
-    public fun hasBoardFull(): Boolean {
+    fun hasBoardFull(): Boolean {
         return !boardItems.containsValue(BoardCellValue.NONE)
     }
     private  fun bot(){
