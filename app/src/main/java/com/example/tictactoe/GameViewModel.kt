@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 
 class GameViewModel : ViewModel() {
     var state by mutableStateOf(GameState())
-    var woncell = 0
+    private var selectWinCellValue = 0
 
     val boardItems: MutableMap<Int, BoardCellValue> = mutableMapOf(
         1 to BoardCellValue.NONE,
@@ -118,52 +118,52 @@ class GameViewModel : ViewModel() {
             ((boardItems[2] == boardValue && boardItems[3] == boardValue)||
                     (boardItems[5] == boardValue && boardItems[9] == boardValue)||
                     (boardItems[4] == boardValue && boardItems[7] == boardValue)) && boardItems[1] == BoardCellValue.NONE -> {
-                woncell = 1
+                selectWinCellValue = 1
                 return true
             }
             ((boardItems[1] == boardValue && boardItems[3] == boardValue)||
                     (boardItems[5] == boardValue && boardItems[8] == boardValue)) && boardItems[2] == BoardCellValue.NONE -> {
-                woncell = 2
+                selectWinCellValue = 2
                 return true
             }
             ((boardItems[1] == boardValue && boardItems[2] == boardValue)||
                     (boardItems[5] == boardValue && boardItems[7] == boardValue)||
                     (boardItems[6] == boardValue && boardItems[9] == boardValue)) && boardItems[3] == BoardCellValue.NONE -> {
-                woncell = 3
+                selectWinCellValue = 3
                 return true
             }
             ((boardItems[1] == boardValue && boardItems[7] == boardValue)||
                     (boardItems[5] == boardValue && boardItems[6] == boardValue)) && boardItems[4] == BoardCellValue.NONE -> {
-                woncell = 4
+                selectWinCellValue = 4
                 return true
             }
             ((boardItems[2] == boardValue && boardItems[8] == boardValue)||
                     (boardItems[4] == boardValue && boardItems[6] == boardValue)||
                     (boardItems[1] == boardValue && boardItems[9] == boardValue)||
                     (boardItems[3] == boardValue && boardItems[7] == boardValue)) && boardItems[5] == BoardCellValue.NONE -> {
-                woncell = 5
+                selectWinCellValue = 5
                 return true
             }
             ((boardItems[3] == boardValue && boardItems[9] == boardValue)||
                     (boardItems[4] == boardValue && boardItems[5] == boardValue)) && boardItems[6] == BoardCellValue.NONE -> {
-                woncell = 6
+                selectWinCellValue = 6
                 return true
             }
             ((boardItems[1] == boardValue && boardItems[4] == boardValue)||
                     (boardItems[3] == boardValue && boardItems[5] == boardValue)||
                     (boardItems[8] == boardValue && boardItems[9] == boardValue)) && boardItems[7] == BoardCellValue.NONE -> {
-                woncell = 7
+                selectWinCellValue = 7
                 return true
             }
             ((boardItems[7] == boardValue && boardItems[9] == boardValue)||
                     (boardItems[2] == boardValue && boardItems[5] == boardValue)) && boardItems[8] == BoardCellValue.NONE -> {
-                woncell = 8
+                selectWinCellValue = 8
                 return true
             }
             ((boardItems[1] == boardValue && boardItems[5] == boardValue)||
                     (boardItems[3] == boardValue && boardItems[6] == boardValue)||
                     (boardItems[7] == boardValue && boardItems[8] == boardValue)) && boardItems[9] == BoardCellValue.NONE -> {
-                woncell = 9
+                selectWinCellValue = 9
                 return true
             }
             else -> return false
@@ -171,18 +171,23 @@ class GameViewModel : ViewModel() {
     }
 
     private fun block():Boolean{
-        if(checkWin(BoardCellValue.CIRCLE)){
-            return true
-        }
-        else {
-            return false
-        }
+        return checkWin(BoardCellValue.CIRCLE)
     }
     private fun checkMiddle():Boolean{
         return boardItems[5] == BoardCellValue.NONE
     }
     private fun randMove(){
         addValueToBoard(randNullSpace())
+    }
+
+    private fun randNullSpace():Int{
+        val blankSpace = ArrayList<Int>()
+        for (i in 1..9){
+            if (boardItems[i] == BoardCellValue.NONE){
+                blankSpace.add(i)
+            }
+        }
+        return blankSpace.random()
     }
 
     private fun checkForVictory(boardValue: BoardCellValue): Boolean {
@@ -230,24 +235,16 @@ class GameViewModel : ViewModel() {
             else -> return false
         }
     }
-    private fun randNullSpace():Int{
-        val null_Space = ArrayList<Int>()
-        for (i in 1..9){
-            if (boardItems[i] == BoardCellValue.NONE){
-                null_Space.add(i)
-            }
-        }
-        return null_Space.random()
-    }
+
     fun hasBoardFull(): Boolean {
         return !boardItems.containsValue(BoardCellValue.NONE)
     }
     private  fun bot(){
         if (checkWin(BoardCellValue.CROSS)){
-            addValueToBoard(woncell)
+            addValueToBoard(selectWinCellValue)
         }
         else if(block()){
-            addValueToBoard(woncell)
+            addValueToBoard(selectWinCellValue)
         }
         else if(checkMiddle()){
             addValueToBoard(5)
